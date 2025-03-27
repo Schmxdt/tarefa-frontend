@@ -47,24 +47,11 @@ const TarefaForm: React.FC = () => {
     }
   })
 
-  // initial load
-
-  useEffect(() => {
-    async function loadData() {
-    }
-
-    loadData()
-  }, [])
-
-
-  // main data load
-
   useEffect(() => {
     async function loadData() {
       const { id } = params
 
       // form data
-
       await api
         .get(`/tarefas/${id}`)
         .then(response => {
@@ -94,7 +81,6 @@ const TarefaForm: React.FC = () => {
 
 
   // data save
-
   const onSubmit = useCallback(async (data: ITarefaDTO) => {
     const payLoad: ITarefaDTO = {
       name: data.name,
