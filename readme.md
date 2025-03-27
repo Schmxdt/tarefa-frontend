@@ -56,14 +56,28 @@ O projeto **Tarefa** é um sistema simples de gerenciamento de tarefas, implemen
 
 ### Pré-requisitos
 
-- Node.js (versão 14 ou superior)
+- Node.js (versão v20.10.0)
 - PostgreSQL
 - Git
 
-### Instalação e Execução
+### Instalação 
 
 1. Clone o repositório:
 
 ```bash
 git clone https://github.com/seu-usuario/tarefa-frontend.git
 cd tarefa
+```
+--------------
+### Execução
+1. Para baixar o node_modules
+```
+yarn
+```
+2. Subir o front-end
+```
+yarn start
+```
+
+
+
