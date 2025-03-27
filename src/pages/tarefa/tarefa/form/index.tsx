@@ -96,13 +96,11 @@ const TarefaForm: React.FC = () => {
         await api.post('/tarefas', payLoad);
       }
 
-      // Exibe o modal de sucesso
       setOpenModal(true);
 
-      // Navega de volta à página anterior após mostrar o modal
       setTimeout(() => {
-        history(-1); // Volta para a página anterior após o modal ser exibido
-      }, 1500); // Adiciona um pequeno delay para o modal ser visível antes de navegar
+        history(-1); 
+      }, 1500); 
 
     } catch (error) {
       const err = error as { response?: { data?: { data?: { name?: string } } } };
