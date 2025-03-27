@@ -65,5 +65,5 @@ O projeto **Tarefa** é um sistema simples de gerenciamento de tarefas, implemen
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/tarefa.git
+git clone https://github.com/seu-usuario/tarefa-frontend.git
 cd tarefa
