@@ -88,32 +88,23 @@ const TarefaForm: React.FC = () => {
       status: data.status,
     }
 
-    if (params.id) {
-      const { id } = params
-
-      payLoad.id = id
-
-      await api
-        .put(`/tarefas`, payLoad)
-        .then(() => history('/tarefas'))
-        .catch(error => {
-          console.log(error.response.data)
-          setMainError(error.response.data.data.name)
-          return error.response.data.data
-        })
-    } else {
-      await api
-        .post('/tarefas', payLoad)
-        .then(() => history('/tarefas/new'))
-        .then(() => reset())
-        .then(() => setTimeout(() => { firstInputElement.current.focus() }, 0))
-        .catch(error => {
-          console.log(error.response.data)
-          setMainError(error.response.data.data.name)
-          return error.response.data.data
-        })
+    try {
+      if (params.id) {
+        const { id } = params
+        payLoad.id = id
+        await api.put(`/tarefas`, payLoad)
+        history(-1)
+      } else {
+        await api.post('/tarefas', payLoad)
+        history(-1)
+      }
+    } catch (error) {
+      const err = error as { response?: { data?: { data?: { name?: string } } } }
+      console.log(err.response?.data)
+      setMainError(err.response?.data?.data?.name || 'Erro ao salvar a tarefa')
     }
-  }, [])
+  }, [params, history])
+
 
 
   const handleChange = (formField: any) => {
