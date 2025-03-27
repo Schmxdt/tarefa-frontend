@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Box, Paper, Grid, TextField, InputLabel } from '@mui/material'
-import { FormGroup, FormControlLabel, Checkbox, FormControl } from '@mui/material'
-import TextareaAutosize from '@mui/base/TextareaAutosize';
-import NumericInput from 'material-ui-numeric-input'
+import { Box, Paper, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Button} from '@mui/material'
+import { FormGroup, FormControlLabel, Checkbox } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormHeader, FormAlert } from 'components'
@@ -19,6 +17,7 @@ interface IRouteParams extends Record<string, string | undefined> {
 
 const TarefaForm: React.FC = () => {
   const [mainError, setMainError] = useState('')
+  const [openModal, setOpenModal] = useState(false);
 
   const params = useParams<IRouteParams>()
   const firstInputElement = useRef(null)
@@ -86,24 +85,35 @@ const TarefaForm: React.FC = () => {
       name: data.name,
       description: data.description,
       status: data.status,
-    }
+    };
 
     try {
       if (params.id) {
-        const { id } = params
-        payLoad.id = id
-        await api.put(`/tarefas`, payLoad)
-        history(-1)
+        const { id } = params;
+        payLoad.id = id;
+        await api.put(`/tarefas`, payLoad);
       } else {
-        await api.post('/tarefas', payLoad)
-        history(-1)
+        await api.post('/tarefas', payLoad);
       }
+
+      // Exibe o modal de sucesso
+      setOpenModal(true);
+
+      // Navega de volta à página anterior após mostrar o modal
+      setTimeout(() => {
+        history(-1); // Volta para a página anterior após o modal ser exibido
+      }, 1500); // Adiciona um pequeno delay para o modal ser visível antes de navegar
+
     } catch (error) {
-      const err = error as { response?: { data?: { data?: { name?: string } } } }
-      console.log(err.response?.data)
-      setMainError(err.response?.data?.data?.name || 'Erro ao salvar a tarefa')
+      const err = error as { response?: { data?: { data?: { name?: string } } } };
+      console.log(err.response?.data);
+      setMainError(err.response?.data?.data?.name || 'Erro ao salvar a tarefa');
     }
-  }, [params, history])
+  }, [params, history]);
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
 
 
@@ -199,7 +209,20 @@ const TarefaForm: React.FC = () => {
 
         </Grid>
       </Box>
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>Sucesso!</DialogTitle>
+        <DialogContent>
+          A tarefa foi salva com sucesso.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Fechar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
+
+
   )
 }
 
